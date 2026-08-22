@@ -32,26 +32,11 @@ export default function HomeScreen() {
 		};
 
 		getSession();
-
-		const {
-			data: { subscription },
-		} = supabase.auth.onAuthStateChange((_event, session) => {
-			if (!session) {
-				setUser(null);
-				router.replace("/(auth)/login");
-				return;
-			}
-
-			setUser(session.user);
-		});
-
-		return () => {
-			subscription.unsubscribe();
-		};
 	}, []);
 
 	const handleSignOut = async () => {
 		await supabase.auth.signOut();
+		router.replace("/(auth)/login");
 	};
 
 	if (loading) {
@@ -65,10 +50,9 @@ export default function HomeScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.title}>Divido</Text>
+			<Text style={styles.text}>{user?.email}</Text>
 
-			<Text style={styles.text}>Du är inloggad.</Text>
-
-			<Text style={styles.email}>{user?.email}</Text>
+			<Button title="Mina grupper" onPress={() => router.push("/groups")} />
 
 			<Button title="Logga ut" onPress={handleSignOut} />
 		</SafeAreaView>
@@ -89,10 +73,6 @@ const styles = StyleSheet.create({
 	},
 
 	text: {
-		fontSize: 18,
-	},
-
-	email: {
 		fontSize: 16,
 	},
 });
