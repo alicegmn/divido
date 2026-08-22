@@ -69,9 +69,12 @@ export default function GroupsScreen() {
 					keyExtractor={(item) => item.id}
 					contentContainerStyle={styles.list}
 					renderItem={({ item }) => (
-						<View style={styles.groupCard}>
+						<Pressable
+							style={styles.groupCard}
+							onPress={() => router.push(`/groups/${item.id}`)}
+						>
 							<Text style={styles.groupName}>{item.name}</Text>
-						</View>
+						</Pressable>
 					)}
 				/>
 			)}
